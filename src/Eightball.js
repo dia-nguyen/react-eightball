@@ -25,6 +25,12 @@ const EIGHTBALL_ANSWERS = [
   { msg: "Outlook not so good.", color: "red" },
   { msg: "Very doubtful.", color: "red" },
 ]
+
+const INITIAL_EIGHTBALL_STATE = {
+  msg: "Think of a Question",
+  color: "black",
+};
+
 /**
  * Magic Eightball - Initially shows "Think of a question"
  * then shows random answer on click
@@ -35,22 +41,55 @@ const EIGHTBALL_ANSWERS = [
  * App -> Eightball
  */
 function EightBall({ answers=EIGHTBALL_ANSWERS }) {
-  const [result, setResult] = useState({
-    msg: "Think of a Question",
-    color: "black",
+  const [result, setResult] = useState(INITIAL_EIGHTBALL_STATE);
+  const [colorCount, setColorCount] = useState({
+    green: 0,
+    goldenrod: 0,
+    red: 0
   });
 
   function getAnswer() {
-    setResult(randomAnswer(answers));
+    const answer = randomAnswer(answers);
+    setResult(answer);
+    setColorCount(count => {
+      count[answer.color]++
+
+      return count;
+    })
+  }
+
+  function resetEightball() {
+    setResult(INITIAL_EIGHTBALL_STATE);
   }
 
   return (
-    <div
-      className="EightBall"
-      onClick={getAnswer}
-      style={{ backgroundColor: result.color }}
-    >
-      <p>{result.msg}</p>
+    <div className='EightBall-wrapper'>
+      <div
+        className="EightBall"
+        onClick={getAnswer}
+        style={{ backgroundColor: result.color }}
+      >
+        <p>{result.msg}</p>
+      </div>
+      <button
+        className='EightBall-btn'
+        onClick={resetEightball}
+      >
+        Reset
+      </button>
+      <div
+        className='EightBall-counter'
+      >
+        <div style={{ backgroundColor: 'green' }}>
+          <p>{ colorCount.green }</p>
+        </div>
+        <div style={{ backgroundColor: 'goldenrod' }}>
+          <p>{ colorCount.goldenrod }</p>
+        </div>
+        <div style={{ backgroundColor: 'red' }}>
+          <p>{ colorCount.red }</p>
+        </div>
+      </div>
     </div>
   );
 }
