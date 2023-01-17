@@ -1,7 +1,11 @@
+import EightBall from "./EightBall";
+
+/**
+ * Passes in list of answers and renders eightball component
+ */
 function App() {
   return (
-    <div className="App">
-    </div>
+    <EightBall/>
   );
 }
 
